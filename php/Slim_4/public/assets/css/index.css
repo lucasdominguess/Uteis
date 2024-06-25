@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    /* box-sizing: border-box; */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+:root{
+    --dtic: #6693ED;
+}
+
+body{
+    background: black;
+}
+
+textarea:focus, input:focus, select:focus {
+    /* box-shadow: 0 0 0 0; */
+    /* border: 0 none; */
+    outline: 0;
+} 
+
+
+.grid-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    grid-template-columns: auto auto auto auto;
+}
+
+/*==================== START DIV ==================*/
+
+div#logos{
+    background: var(--dtic);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 40%;
+    /* Juntar esses elementos !!!!*/
+}
+
+div#login{
+    color: black;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    height: 100vh;
+    width: 60%;
+    border-color: black;
+    font-size: 25px;
+}
+
+/*==================== END DIV ==================*/
+
+/*==================== START FORM ==================*/
+
+form#form_login{
+    /* background-color: rgb(255, 115, 115); */
+    position: relative;
+    top: 300px; /* Era 400 sem o Bemvindo*/
+    left: 30%;
+    /* width: 500px; */
+    width: 40%;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form#form_login > h2{
+    color: #6693ED;
+    text-align: center;
+    font-family: "Titan One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 100px;
+}
+
+/*==================== END FORM ==================*/
+
+/*==================== START LABEL ==================*/
+
+label{
+    color: #6693ED;
+    text-align: start;
+    font-family: "Titan One", sans-serif;
+    font-weight: 400;
+    font-size: 30px;
+    font-style: normal;
+}
+
+label#duvidas{
+    /* background-color: greenyellow; */
+    width: 20%;
+    font-size: medium;
+    display: block;
+    position: relative;
+    left: 80%;
+    text-align: center;
+    color: black;
+    cursor: pointer;
+    transition: 0.5s;
+            &:hover, &:focus{
+                transition: 0.5s;
+                color: grey;
+            }
+}
+
+label.eye-btn{
+    width: 10%;
+    /* text-align: end; */
+    position: relative;
+    left: 45%;
+    bottom: 45%;
+    color: black;
+}
+
+/*==================== END LABEL ==================*/
+
+/*==================== START INPUT ==================*/
+
+input#input_login, 
+input#input_senha{
+    /* background-color: pink; */
+    border-color: gray;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 50px;
+    font-size: 15px;
+    transition: 1s;
+    text-align: start;
+            &:hover, &:focus{
+                /* border-color: var(--dtic); */
+                border-color: var(--dtic);
+                font-size: 20px;
+                height: 62.5px;
+            }
+}
+
+/*==================== END INPUT ==================*/
+
+button#botao_login{
+    background: #ED6693;
+    color: white;
+    display: block;         /* Para centralizar */
+    margin-left: auto;      /* Para centralizar */
+    margin-right: auto;     /* Para centralizar */
+    font-size: 25px;
+    border-color: transparent;
+    height: 41px;
+    width: 125px;
+    cursor: pointer;
+    transition: 0.5s;
+    border-radius: 25px;
+            &:hover, &:focus{
+                box-shadow: rgb(0, 0, 0) 0 6px 6px -5px;
+                transform: translate3d(0, 1px, 0);
+            }
+}
+
+img#logo_dtic, 
+img#logo_prefeitura {
+    /* margin-block-: 50%; */
+    width: 200px;
+}
+
+/*==================== MEDIA QUERY LAPTOP ==================*/
+
+@media screen and (max-width: 1024px)
+/* MAX WIDTH = TELA MENORES QUE ALGUMA RESOLUCAO */
+
+{
+    div.grid-container{
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    div#login{
+        grid: column;
+        color: black;
+        display: block;
+        flex-direction: row;
+        background: rgb(255, 255, 255);
+        height: 70%;
+        width: 100vw;
+        border-color: black;
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    div#logos{
+        display: flex;
+        position: absolute;
+        top: 70%;
+        height: 30%;
+        width: 100vw;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    form#form_login{
+        position: relative;
+        font-size: medium;
+        width: 90%;
+        top: 10%;
+        left: 5%;
+        display: block;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    label{
+        text-align: start;
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    label.eye-btn{
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 1024px)
+{
+    label#duvidas{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    form#form_login > h2{
+        font-size: 30px;
+        margin-bottom: 100px;
+    }
+}
