@@ -19,7 +19,7 @@ class ListOneUserAction extends BirthdayAction
         }
 
        $r = $this->birthdayRepository->selectUserOfId($id,'cadastros');
-        if ($r == 0) {
+        if (empty($r)) {
             $msg = ['status'=>'fail','msg'=>'Nao existe cadastro com esse Id'];
             return $this->respondWithData($msg);
         }

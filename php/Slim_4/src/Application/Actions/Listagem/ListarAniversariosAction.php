@@ -18,9 +18,9 @@ class ListarAniversariosAction extends BirthdayAction
         $d = $date->format("m");
         $r = $this->birthdayRepository->query($d);
         
-      
+    //   Helpers::dd($r);
 
-        if(count($r)== 0){
+        if(empty($r)){
             // $this->createLogger->logger('list_teste','nenhum usuario encontrado');
             $msg = ['status'=>'fail','msg'=>'nenhum aniversariante para este mes'];
             return $this->respondWithData($msg) ; 

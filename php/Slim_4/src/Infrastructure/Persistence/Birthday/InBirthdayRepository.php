@@ -52,7 +52,7 @@ class InBirthdayRepository implements BirthdayRepository {
     {
         $stmt = $this->sql->selectUserOfId($id,$table,$params);
         $stmt->execute();
-        $r=$stmt->fetch(\PDO::FETCH_ASSOC);
+        $r=$stmt->fetchAll(\PDO::FETCH_ASSOC);
         
         return $r;
     }

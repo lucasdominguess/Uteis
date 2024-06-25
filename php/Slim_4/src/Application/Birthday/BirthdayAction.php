@@ -6,7 +6,7 @@ use App\classes\CreateLogger;
 use App\Infrastructure\Persistence\Birthday\BirthdayRepository;
 use App\Infrastructure\Persistence\User\Sql;
 use App\Infrastructure\Persistence\User\RedisConn;
-
+use voku\helper\AntiXSS;
 
 abstract class BirthdayAction extends Action
 {
@@ -15,7 +15,8 @@ abstract class BirthdayAction extends Action
         protected BirthdayRepository $birthdayRepository,
        
         protected CreateLogger $createLogger,
-        protected RedisConn $redis 
+        protected RedisConn $redis,
+        protected AntiXSS $antiXSS 
 
         )
     {

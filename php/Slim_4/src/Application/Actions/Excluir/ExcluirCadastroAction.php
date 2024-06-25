@@ -18,10 +18,10 @@ class ExcluirCadastroAction extends BirthdayAction
         }
 
         try {
-          $r =  $this->birthdayRepository->update($id,'cadastros',['activated_member'=>'sim','activated_email'=>'sim'],'id');
+          $r =  $this->birthdayRepository->update($id,'cadastros',['activated_member'=>'nao','activated_email'=>'nao']);
 
             if ($r == 0) {
-                $msg = ['status'=>'fail','msg'=>'Nao existe cadastro com esse Id'];
+                $msg = ['status'=>'fail','msg'=>'Falha ao atualizar dados'];
                 return $this->respondWithData($msg);
             }
 

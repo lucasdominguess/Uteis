@@ -18,9 +18,8 @@ class LogarAction extends BirthdayAction
 
     public function action(): Response
     {
-        $xss = new AntiXSS();
-        $login = $xss->xss_clean($_POST['login_rede']) ?? null;
-        $pass = $xss->xss_clean($_POST['senha_rede']) ?? null;
+        $login = $this->antiXSS->xss_clean($_POST['login_rede']) ?? null;
+        $pass = $this->antiXSS->xss_clean($_POST['senha_rede']) ?? null;
         $r = new LoginRepository($this->birthdayRepository);
         // $r->logar($login,$pass);
         return $this->respondWithData($r->logar($login,$pass),200);
