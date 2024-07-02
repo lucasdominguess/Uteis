@@ -1,10 +1,14 @@
 <?php
 namespace App\Infrastructure\Persistence\User;
+use App\classes\CreateLogger;
 
 
 class Sql extends \PDO
 /**
- * 
+ * Conexão com banco de dados
+ * @param $env variavel env com dados para conexão do banco
+ * @author Lucas_Domingues
+ *  
  */
     {   
         public function __construct() {
@@ -18,10 +22,16 @@ class Sql extends \PDO
                 $env['user'],
                 $env['password']);
             } catch (\PDOException $th) {
+                $log = new CreateLogger();
+                $log->loggerTelegran("ERRO-SQL","Erro ao conectar banco de dados {$env['sgbd']}");
                 throw new \PDOException('Erro ao conectar banco de dados');
             }
           
         }
+        /**
+         * Seleciona todos os dados de uma tabela especifica 
+         * @param string $table Nome da tabela do banco de dados 
+         */
         public function selectFindAll($table): \PDOStatement 
         {
             $stmt = $this->prepare("SELECT * from {$table}");
@@ -29,6 +39,12 @@ class Sql extends \PDO
             // $r=$stmt->fetchAll(\PDO::FETCH_ASSOC); 
             return $stmt;
         }
+        /**
+         * Seleciona todos os dados de uma tabela referente ao ID especifico
+         * @param string $id identificação unica do usuario 
+         * @param string $table tabela onde sera feita a busca pelos dados 
+         * @param  string|int $params parametros para comparação where da consulta
+         */
         public function selectUserOfId(string|int $id,string $table,string|int $params ='id'): \PDOStatement
         {
             $stmt = $this->prepare("SELECT * from {$table} where $params = :id");
@@ -38,6 +54,13 @@ class Sql extends \PDO
             
             return $stmt;
         }
+        /**
+         * Atualizar dados em uma tabela dinamicamente
+         * @param string $id identificação unica do usuario 
+         * @param string $table nome da tabela para o update dos dados 
+         * @param array $dados array de dados com nomes de colunas e valores 
+         * @param string|int $params parametros para comparação where da consulta
+         */
         public function update(string|int $id,string $table,array $dados =[],string|int $params = 'id') : \PDOStatement
         {
             
@@ -63,6 +86,11 @@ class Sql extends \PDO
 
             return $stmt ; 
         }
+        /**
+         * Inserir dados em uma tabela dinamicamente
+         * @param string $table nome da tabela 
+         * @param array $dados array de dados com nomes de colunas e valores 
+         */
         public function insert(string $table,array $dados = []) : \PDOStatement
         {
             $keys = array_keys($dados);
@@ -79,6 +107,12 @@ class Sql extends \PDO
             return $stmt;
           
        }
+       /**
+         * deletar dados de uma tabela especifica
+         * @param string $table nome da tabela para deletar os dados 
+         * @param string $id identificação unica do usuario 
+         * @param string|int $params parametros para comparação where da consulta
+         */
        public function delete($id,$table,string|int $params = 'id') :\PDOStatement
        {
            $stmt= $this->prepare("DELETE from {$table} where $params = :id");

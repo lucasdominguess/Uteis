@@ -2,6 +2,7 @@
 namespace App\Infrastructure\Persistence\Birthday;
 
 use DateTime;
+use App\Domain\User\User;
 
 interface BirthdayRepository { 
     
@@ -19,7 +20,9 @@ interface BirthdayRepository {
 
     public function query($date) :array |null ;
 
-    public function selectUserByLogin($login) :array |null ;
+    public function selectUserByLogin($login):?User;
+    
+    public function selectUserByDay($day) :array|null;
 
 
 

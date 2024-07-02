@@ -5,23 +5,35 @@ namespace App\classes;
 
 use Monolog\Level;
 use Monolog\Logger;
+use App\classes\Email;
 use App\Domain\User\User;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SendGridHandler;
-use Monolog\Handler\TelegramBotHandler;
 
+use Monolog\Handler\TelegramBotHandler;
 use Monolog\Handler\NativeMailerHandler;
 use PhpParser\Lexer\TokenEmulator\ReadonlyTokenEmulator;
-
+/**
+ * Classe responsavel por criar logs de sistema 
+ *@author Lucas_Domingues
+ */
 class CreateLogger {
     
-   
-    public function logger ($dirname ,$msg, $modo = 'info', array|string $extra = null){
+/**
+ * @method mixed logger() Log cria um arquivo CSV nomeado com data atual em seu conteudo ira conter msg com erro especificado e seu level 
+ * @param string $title Titulo do log (ira formatar para maiusculo e substituir caracteres especiais por _ )
+ * @param string $msg Menssagem com erro detalhado   
+ * @param string $nivel Nivel do log setado por padrao INFO 
+ * @param array|string $extra Conteudo extra (opcional) enviando com pushProcessor , setado como null por padrao
+ * @author Lucas_Domingues
+    */
+    public function loggerCSV (string $title ,string $msg, string $nivel = 'info', array|string $extra = null){
         $now = new \DateTimeZone( 'America/Sao_Paulo');
         $now_form =(new \DateTime('now',$now))->format('d-m-Y');
         
+        $ftitle = strtoupper(str_replace([' ','.','-','*'],'_',$title));
         $date = $GLOBALS['days'] ?? $now_form ;
-        $logger = new Logger($dirname);
+        $logger = new Logger($ftitle);
 
         // $logger->pushProcessor(function ($record) use ($extra) { 
         //     $record["extra"]["server"] = $extra ;
@@ -29,15 +41,25 @@ class CreateLogger {
         // });
  
         $logger->pushHandler(new StreamHandler(dirname(__FILE__)."/../../logs/LOG_".$date.".csv"));
-        $logger->$modo($msg);
+        $logger->$nivel($msg);
 }
-    public function logTelegran($msg, $modo = 'warning', array|string $extra = null){
-        $logger = new Logger('TelegranBot');
+/**
+* @method mixed loggerTelegran() ferramenta do telegran ira mandar msg para o desenvolvedor com erro de nivel Warning 
+* Invocando tbm metodo logger e logEmail 
+* @param string $title Titulo do log (ira formatar para maiusculo e substituir caracteres especiais por _ )
+* @param string $msg Menssagem com erro detalhado   
+* @param string $nivel Nivel do log setado por padrao WARNING 
+* @param array|string $extra Conteudo extra (opcional) enviando com pushProcessor , setado como null por padrao
+* @author Lucas_Domingues
+**/
+    public function loggerTelegran(string $title ,string $msg, $nivel = 'warning', array|string $extra = null){
+        $ftitle = strtoupper(str_replace([' ','.','-'],'_',$title));
+        $logger = new Logger(strtoupper($ftitle));
         
-        $logger->pushProcessor(function ($record) use ($extra) { 
-            $record["extra"]["server"] = $extra ;
-            return $record ;
-        });
+        // $logger->pushProcessor(function ($record) use ($extra) { 
+        //     $record["extra"]["server"] = $extra ;
+        //     return $record ;
+        // });
     
 
         $logger->pushHandler( new TelegramBotHandler(
@@ -45,22 +67,34 @@ class CreateLogger {
             channel:"@phpAplicationweb",
             level:Level::Warning
     ));
-        $logger->$modo($msg);
+        $this->loggerCSV($title,$msg,$nivel);
+        $this->loggerEmail($title,$msg);
+        $logger->$nivel($msg);
+        
         
        
     
 
-} 
-    public function Emaillogger(string|array $to ,string $subject , string $from) { 
-        $logger = new Logger ( 'Emailloger'); 
-        $logger->pushHandler(new NativeMailerHandler(
-            to : $to ,
-            subject : $subject , 
-            from : $from ,
-            level : Level::Critical
+}  
+/**
+ * @method mixed loggerEmail() Envia um email para o desenvolvedor responsavel com erro Critico
+ * @param string $title (subject) Titulo do email (ira formatar para maiusculo e substituir caracteres especiais por _ )
+ * @param string $msg (body)Corpo do email com Menssagem de erro detalhado   
+ * @param string $nivel Nivel do log setado por padrao critical 
+ * @param array|string $extra Conteudo extra (opcional) enviando com pushProcessor , setado como null por padrao
+ * @author Lucas_Domingues
+ */
+    public function loggerEmail(string $title ,string $msg ,string|array $to ="lucasdominguesofficial@gmail.com",array|string $extra = null) { 
+        $fsubject = strtoupper(str_replace(['.','-'],'_',$title));
+        $logger = new Logger ($fsubject); 
 
-        )); 
-        $logger->critical('Esta é uma mensagem de erro crítica!');
+        $logger->pushProcessor(function ($record) use ($extra) { 
+            $record["extra"]["server"] = $extra ;
+            return $record ;
+        });
+        $e = new Email;
+        $e->mandar_email($to,null,$fsubject,$msg);
+        $logger->critical('Esta é uma mensagem de erro crítico!');
         
     }
 
