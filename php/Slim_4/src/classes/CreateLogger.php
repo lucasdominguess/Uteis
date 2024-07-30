@@ -6,16 +6,14 @@ namespace App\classes;
 use Monolog\Level;
 use Monolog\Logger;
 use App\classes\Email;
-use App\Domain\User\User;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SendGridHandler;
+
 
 use Monolog\Handler\TelegramBotHandler;
-use Monolog\Handler\NativeMailerHandler;
-use PhpParser\Lexer\TokenEmulator\ReadonlyTokenEmulator;
+
 /**
  * Classe responsavel por criar logs de sistema 
- *@author Lucas_Domingues
+
  */
 class CreateLogger {
     
@@ -48,11 +46,12 @@ class CreateLogger {
 * Invocando tbm metodo logger e logEmail 
 * @param string $title Titulo do log (ira formatar para maiusculo e substituir caracteres especiais por _ )
 * @param string $msg Menssagem com erro detalhado   
+* @param bool $sendemail Torna o envio de log por email Opçional 
 * @param string $nivel Nivel do log setado por padrao WARNING 
 * @param array|string $extra Conteudo extra (opcional) enviando com pushProcessor , setado como null por padrao
 * @author Lucas_Domingues
 **/
-    public function loggerTelegran(string $title ,string $msg, $nivel = 'warning', array|string $extra = null){
+    public function loggerTelegran(string $title ,string $msg, bool $sendEmail = false ,string $nivel = 'warning', array|string $extra = null){
         $ftitle = strtoupper(str_replace([' ','.','-'],'_',$title));
         $logger = new Logger(strtoupper($ftitle));
         
@@ -64,11 +63,14 @@ class CreateLogger {
 
         $logger->pushHandler( new TelegramBotHandler(
             apiKey:"6896066213:AAEfj5TxiJaH6m2CEsP9fJZh3BUvpPfypzw",
-            channel:"@phpAplicationweb",
+            channel:"@Aniversario_AppWeb",
             level:Level::Warning
     ));
         $this->loggerCSV($title,$msg,$nivel);
-        $this->loggerEmail($title,$msg);
+        if ($sendEmail) {
+            $emails = ['lucasdomingues@prefeitura.sp.gov.br','tlettieri@prefeitura.sp.gov.br'];
+            $this->loggerEmail($title,$msg,$emails);
+        }
         $logger->$nivel($msg);
         
         

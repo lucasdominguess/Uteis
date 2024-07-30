@@ -26,5 +26,7 @@ class Regex
 
     CONST NUMBER_TEL = "/\(?(\d{3}|\d{2})\)?[ -.](\d{5}[ -.]\d{4})|\d{7}[ -.]?\d{4} /im";
 
+    CONST ID_LOGIN = "/^(x|X|D|d)\d{6}$/";
+
     
 }

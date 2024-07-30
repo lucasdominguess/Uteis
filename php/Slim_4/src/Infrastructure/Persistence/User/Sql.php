@@ -7,7 +7,7 @@ class Sql extends \PDO
 /**
  * Conexão com banco de dados
  * @param $env variavel env com dados para conexão do banco
- * @author Lucas_Domingues
+
  *  
  */
     {   
